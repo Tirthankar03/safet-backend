@@ -9,19 +9,22 @@ import {
   varchar,
   geometry,
   primaryKey,
+  integer,
 } from "drizzle-orm/pg-core";
 import { reports } from "./reports";
+import { createInsertSchema } from "drizzle-zod";
 
 export const users = pgTable("users", {
     id: text("id").primaryKey(),
     email: varchar({length: 255}).notNull().unique(),
+    phoneNumber: integer().notNull().unique(), // Add phone number
     username: varchar({ length: 255 }).notNull(),
     password: varchar({length: 255}).notNull(),
     role: varchar({ length: 255 }).notNull().default('user'),
     currentLocation: geometry("location", {
         type: "point",
         srid: 4326,
-      }).notNull(),
+    }).notNull(),
 })
 
 //many-many self relation
@@ -59,5 +62,4 @@ export const userContactRelations = relations(userContacts, ({one}) => ({
         references: [users.id]
     })
 }))
-
 
