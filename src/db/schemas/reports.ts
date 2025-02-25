@@ -7,8 +7,11 @@ import {
   index,
   integer,
   geometry,
+  timestamp,
+  varchar,
 } from "drizzle-orm/pg-core";
-import { faceEncodings } from "./faces";
+import { reportImages } from "./reportImages";
+import { users } from "./users";
 
 // Reports table
 export const reports = pgTable(
@@ -18,10 +21,16 @@ export const reports = pgTable(
     name: text("name").notNull(),
     description: text("description").notNull(),
     image_url: text("image_url").notNull().default("/default.jpg"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
     address: text("address").notNull(),
     country: text("country").notNull(),
     city: text("city").notNull(),
     cluster_id: text("cluster_id"),
+    type: varchar({ length: 255 }).notNull(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }), 
     location: geometry("location", {
       type: "point",
       srid: 4326,
@@ -42,6 +51,10 @@ export const reportClusters = pgTable("report_clusters", {
 
 
 
-export const reportsRelations = relations(reports, ({ many }) => ({
-    faceEncodings: many(faceEncodings),
+export const reportsRelations = relations(reports, ({ many, one }) => ({
+    reportImages: many(reportImages),
+    user: one(users, {
+      fields: [reports.userId],
+      references: [users.id]
+    })
   }));
