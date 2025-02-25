@@ -20,7 +20,6 @@ export const reports = pgTable(
     id: text("id").primaryKey(),
     name: text("name").notNull(),
     description: text("description").notNull(),
-    image_url: text("image_url").notNull().default("/default.jpg"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
     address: text("address").notNull(),

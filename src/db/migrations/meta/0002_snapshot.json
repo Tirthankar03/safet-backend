@@ -1,6 +1,6 @@
 {
-  "id": "a2826652-9ded-47d1-96ea-e5b8f256c821",
-  "prevId": "69f3c873-67a5-4e38-9fd6-6d12dbbcbf0b",
+  "id": "3c8f1950-b993-453b-a95a-5426298ba722",
+  "prevId": "f125b971-648e-481d-857c-61e1a72bf17d",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -87,6 +87,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "phoneNumber": {
+          "name": "phoneNumber",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
         "username": {
           "name": "username",
           "type": "varchar(255)",
@@ -122,6 +128,13 @@
           "nullsNotDistinct": false,
           "columns": [
             "email"
+          ]
+        },
+        "users_phoneNumber_unique": {
+          "name": "users_phoneNumber_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "phoneNumber"
           ]
         }
       },
@@ -187,13 +200,6 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "image_url": {
-          "name": "image_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'/default.jpg'"
         },
         "created_at": {
           "name": "created_at",
@@ -337,7 +343,7 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "default": "'/default.jpg'"
+          "default": "'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Michael_Jordan_in_2014.jpg/220px-Michael_Jordan_in_2014.jpg'"
         },
         "has_face": {
           "name": "has_face",

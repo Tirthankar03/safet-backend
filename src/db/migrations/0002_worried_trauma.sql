@@ -8,11 +8,13 @@ CREATE TABLE "user_contacts" (
 CREATE TABLE "users" (
 	"id" text PRIMARY KEY NOT NULL,
 	"email" varchar(255) NOT NULL,
+	"phoneNumber" integer NOT NULL,
 	"username" varchar(255) NOT NULL,
 	"password" varchar(255) NOT NULL,
 	"role" varchar(255) DEFAULT 'user' NOT NULL,
 	"location" geometry(point) NOT NULL,
-	CONSTRAINT "users_email_unique" UNIQUE("email")
+	CONSTRAINT "users_email_unique" UNIQUE("email"),
+	CONSTRAINT "users_phoneNumber_unique" UNIQUE("phoneNumber")
 );
 --> statement-breakpoint
 CREATE TABLE "report_clusters" (
@@ -26,7 +28,6 @@ CREATE TABLE "reports" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"description" text NOT NULL,
-	"image_url" text DEFAULT '/default.jpg' NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"address" text NOT NULL,
@@ -45,7 +46,7 @@ CREATE TABLE "report_images" (
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"encoding" vector(128),
-	"image_url" text DEFAULT '/default.jpg' NOT NULL,
+	"image_url" text DEFAULT 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Michael_Jordan_in_2014.jpg/220px-Michael_Jordan_in_2014.jpg' NOT NULL,
 	"has_face" boolean DEFAULT false NOT NULL
 );
 --> statement-breakpoint

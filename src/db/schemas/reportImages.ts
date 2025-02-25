@@ -21,7 +21,7 @@ export const reportImages = pgTable(
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
     // Nullable embedding; will be set only when an image contains a face.
     encoding: vector("encoding", { dimensions: 128 }),
-    imageUrl: text("image_url").notNull().default("/default.jpg"),
+    imageUrl: text("image_url").notNull().default("https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Michael_Jordan_in_2014.jpg/220px-Michael_Jordan_in_2014.jpg"),
     // Indicates whether the image has a face (and should have an encoding)
     hasFace: boolean("has_face").notNull().default(false),
   },

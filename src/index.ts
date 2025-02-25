@@ -1,6 +1,7 @@
 import express, { json, urlencoded } from 'express'
 import authRoutes from './routes/auth';
 import userRoutes from './routes/users';
+import reportRoutes from './routes/reports';
 import multer from "multer";
 
 const app = express()
@@ -20,7 +21,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/users', userRoutes)
 app.use('/api/auth', authRoutes)
-// app.use('/api/reports')
+app.use('/api/reports',reportRoutes)
 // app.use('/api/report-images')
 
 
