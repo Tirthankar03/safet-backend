@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addImage } from "../controllers/reportImages";
+import { addImage, deleteImage, findMatchingFace, updateImage } from "../controllers/reportImages";
 import multer from "multer";
 
 const router = Router()
@@ -11,11 +11,11 @@ const upload = multer({
 
 
 
-router.post('/',upload.fields([
-    { name: "img", maxCount: 1 }]), addImage)
-// router.post('/match', findMatchingFace)
-// router.put('/:id',updateImage)
-// router.delete('/:id',deleteImage)
+router.post('/',upload.fields([{ name: "img", maxCount: 1 }]), addImage)
+router.post('/match',upload.fields([{ name: "img", maxCount: 1 }]), findMatchingFace)
+
+router.put('/:reportImageId',upload.fields([{ name: "img", maxCount: 1 }]), updateImage)
+router.delete('/:reportImageId',deleteImage)
 
 
 

@@ -30,6 +30,28 @@ export const uploadToCloudinary = (file: Express.Multer.File) => {
 };
 
 
+// Function to delete an image from Cloudinary
+export const deleteFromCloudinary = async (imageUrl: string) => {
+  const publicId = imageUrl.split("/").pop()?.split(".")[0]; // Extract public_id
+  if (publicId) {
+    await cloudinary.v2.uploader.destroy(`reports/${publicId}`);
+  }
+};
+
+// Function to update an image in Cloudinary
+export const updateCloudinaryImage = async (oldImageUrl: string, newFile: Express.Multer.File) => {
+  // Delete the old image
+  await deleteFromCloudinary(oldImageUrl);
+
+  // Upload the new image
+  const cloudinaryResponse: any = await uploadToCloudinary(newFile);
+  if (!cloudinaryResponse || !cloudinaryResponse.secure_url) {
+    throw new Error("Failed to upload new image");
+  }
+
+  return cloudinaryResponse.secure_url;
+};
+
 
 
 
