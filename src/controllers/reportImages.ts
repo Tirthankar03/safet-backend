@@ -206,13 +206,13 @@ export const deleteImage = async (req: Request, res: Response) => {
 export const findMatchingFace = async (req: Request, res: Response) => {
   try {
     if (!isMulterFileArrayDictionary(req.files)) {
-      res.status(400).json({ success: false, message: "Invalid file upload" });
+      res.status(400).json({ success: false, message: "no file uploaded" });
       return
     }
 
     const img = req.files["img"]?.[0];
     if (!img) {
-      res.status(400).json({ success: false, message: "Image not uploaded" });
+      res.status(400).json({ success: false, message: "Image not found" });
       return
       }
 
