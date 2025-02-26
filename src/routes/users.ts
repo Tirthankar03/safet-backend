@@ -1,17 +1,22 @@
 import { Router } from "express";
 import {  addContact, deleteUser, getAllContacts, getContactById, updateUser } from "../controllers/users";
 import { verifyToken } from "../middlewares/authMiddleware";
+import multer from "multer";
 
 
 
 const router = Router()
 
-router.put('/',verifyToken, updateUser)
-router.delete('/:id', deleteUser)
+const upload = multer();
+// app.use(upload.none()); // Parses form-data
 
-router.post('/contact/:id',verifyToken, addContact)
-router.get('/contact',verifyToken, getAllContacts)
-router.get('/contact/:id',verifyToken, getContactById)
+
+router.put('/',verifyToken, upload.none(), updateUser)
+router.delete('/:id', upload.none(), deleteUser)
+
+router.post('/contact/:id',verifyToken,upload.none(), addContact)
+router.get('/contact',verifyToken,upload.none(), getAllContacts)
+router.get('/contact/:id',verifyToken,upload.none(), getContactById)
 
 
 

@@ -1,18 +1,22 @@
 import { Router } from "express";
 import { verifyToken } from "../middlewares/authMiddleware";
 import { createReport, deleteReport, getAllRegionMaps, getAllSosReports, getReportById, updateReport } from "../controllers/reports";
+import multer from "multer";
 
 
 
 const router = Router()
 
+const upload = multer();
+
+
 router.get('/', getAllRegionMaps)
 router.get('/:id', getReportById)
 router.get('/sos', getAllSosReports)
-router.post('/',verifyToken, createReport)
+router.post('/',verifyToken,upload.none(), createReport)
 
-router.put('/:id',verifyToken, updateReport)
-router.delete('/:id',verifyToken, deleteReport)
+router.put('/:id',verifyToken,upload.none(), updateReport)
+router.delete('/:id',verifyToken,upload.none(), deleteReport)
 
 
 

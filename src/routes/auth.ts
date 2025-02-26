@@ -1,11 +1,15 @@
 import { Router } from "express";
 import { loginUser, registerUser } from "../controllers/auth";
+import multer from "multer";
 
 
 const router = Router()
 
-router.post('/register', registerUser)
-router.post('/login', loginUser)
+const upload = multer();
+
+
+router.post('/register',upload.none(), registerUser)
+router.post('/login',upload.none(), loginUser)
 
 
 
