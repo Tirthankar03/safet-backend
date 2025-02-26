@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import { db } from "../db";
-import { reportImages } from "../db/schemas/reportImages";
-import { generateUniqueId } from "../lib/utils";
-import { deleteFromCloudinary, isMulterFileArrayDictionary, updateCloudinaryImage, uploadToCloudinary } from "../lib/upload";
+import { db } from "../db/index.js";
+import { reportImages } from "../db/schemas/reportImages.js";
+import { generateUniqueId } from "../lib/utils.js";
+import { deleteFromCloudinary, isMulterFileArrayDictionary, updateCloudinaryImage, uploadToCloudinary } from "../lib/upload.js";
 import FormData from "form-data";
 import axios from "axios";
 import { cosineDistance, desc, eq, gt, sql } from "drizzle-orm";
-import { reports } from "../db/schemas/reports";
+import { reports } from "../db/schemas/reports.js";
 
 export const addImage = async (req: Request, res: Response) => {
   try {

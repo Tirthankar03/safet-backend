@@ -7,7 +7,7 @@ import {
   timestamp,
   boolean,
 } from "drizzle-orm/pg-core";
-import { reports } from "./reports";
+import { reports } from "./reports.js";
 
 export const reportImages = pgTable(
   "report_images",

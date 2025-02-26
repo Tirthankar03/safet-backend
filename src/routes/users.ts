@@ -1,6 +1,6 @@
 import { Router } from "express";
-import {  addContact, deleteUser, getAllContacts, getContactById, updateUser } from "../controllers/users";
-import { verifyToken } from "../middlewares/authMiddleware";
+import {  addContact, deleteUser, getAllContacts, getContactById, updateUser } from "../controllers/users.js";
+import { verifyToken } from "../middlewares/authMiddleware.js";
 import multer from "multer";
 
 

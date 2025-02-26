@@ -10,8 +10,8 @@ import {
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
-import { reportImages } from "./reportImages";
-import { users } from "./users";
+import { reportImages } from "./reportImages.js";
+import { users } from "./users.js";
 
 // Reports table
 export const reports = pgTable(

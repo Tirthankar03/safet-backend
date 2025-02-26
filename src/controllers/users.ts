@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import bcrypt from 'bcryptjs';
-import { db } from "../db";
-import { userContacts, users } from "../db/schemas/users";
+import { db } from "../db/index.js";
+import { userContacts, users } from "../db/schemas/users.js";
 import jwt from 'jsonwebtoken';
 import { and, eq, sql } from "drizzle-orm";
-import { generateUniqueId } from "../lib/utils";
-import { parseFormData } from "../lib/parser";
+import { generateUniqueId } from "../lib/utils.js";
+import { parseFormData } from "../lib/parser.js";
 
 
 export const updateUser = async (req: Request, res: Response) => {

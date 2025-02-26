@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { db } from "../db";
+import { db } from "../db/index.js";
 import { sql, eq } from "drizzle-orm";
-import { generateUniqueId } from "../lib/utils";
-import { reportClusters, reports } from "../db/schemas/reports";
-import { assignReportClusterIds, updateReportClusters } from "../lib/report-clustering";
-import { parseFormData } from "../lib/parser";
-import { userContacts, users } from "../db/schemas/users";
+import { generateUniqueId } from "../lib/utils.js";
+import { reportClusters, reports } from "../db/schemas/reports.js";
+import { assignReportClusterIds, updateReportClusters } from "../lib/report-clustering.js";
+import { parseFormData } from "../lib/parser.js";
+import { userContacts, users } from "../db/schemas/users.js";
 
 export const createReport = async (req: Request, res: Response) => {
   try {

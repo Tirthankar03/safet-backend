@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addImage, deleteImage, findMatchingFace, updateImage } from "../controllers/reportImages";
+import { addImage, deleteImage, findMatchingFace, updateImage } from "../controllers/reportImages.js";
 import multer from "multer";
 
 const router = Router()

@@ -11,7 +11,7 @@ import {
   primaryKey,
   integer,
 } from "drizzle-orm/pg-core";
-import { reports } from "./reports";
+import { reports } from "./reports.js";
 import { createInsertSchema } from "drizzle-zod";
 
 export const users = pgTable("users", {

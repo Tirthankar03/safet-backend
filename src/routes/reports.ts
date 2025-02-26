@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { verifyToken } from "../middlewares/authMiddleware";
-import { createReport, deleteReport, getAllRegionMaps, getAllSosReports, getReportById, updateReport } from "../controllers/reports";
+import { verifyToken } from "../middlewares/authMiddleware.js";
+import { createReport, deleteReport, getAllRegionMaps, getAllSosReports, getReportById, updateReport } from "../controllers/reports.js";
 import multer from "multer";
 
 

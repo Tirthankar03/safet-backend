@@ -1,8 +1,8 @@
 import express, { json, urlencoded } from 'express'
-import authRoutes from './routes/auth';
-import userRoutes from './routes/users';
-import reportRoutes from './routes/reports';
-import reportImagesRoutes from './routes/reportImages';
+import authRoutes from './routes/auth.js';
+import userRoutes from './routes/users.js';
+import reportRoutes from './routes/reports.js';
+import reportImagesRoutes from './routes/reportImages.js';
 import multer from "multer";
 
 const app = express()

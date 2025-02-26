@@ -1,4 +1,4 @@
-import { db } from "../db";
+import { db } from "../db/index.js";
 import { sql } from "drizzle-orm";
 
 export async function assignReportClusterIds(minPoints = 2, distance = 10000) {
