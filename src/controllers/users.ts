@@ -1,13 +1,29 @@
 import { Request, Response } from "express";
-import bcrypt from 'bcryptjs';
-import { db } from "../db/index.js";
-import { userContacts, users } from "../db/schemas/users.js";
-import jwt from 'jsonwebtoken';
+import bcrypt from "bcryptjs";
+import { db } from "../db/index";
+import { userContacts, users } from "../db/schemas/users";
+import jwt from "jsonwebtoken";
 import { and, eq, sql } from "drizzle-orm";
-import { generateUniqueId } from "../lib/utils.js";
-import { parseFormData } from "../lib/parser.js";
+import { generateUniqueId } from "../lib/utils";
+import { parseFormData } from "../lib/parser";
 
 
+export const getAllUsers = async (req: Request, res: Response) => {
+try {
+  const data = await db.select().from(users)
+  res.status(200).json({
+    success: true,
+    message: "Get all users success",
+    data,
+  });
+  
+} catch (error) {
+  console.log("Error fetching users>>>", error);
+  res
+    .status(500)
+    .json({ success: false, message: "An unexpected error occurred" });
+}
+}
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const userId = req.userId!;
@@ -19,16 +35,24 @@ export const updateUser = async (req: Request, res: Response) => {
 
     // Ensure password is not updated through this endpoint
     if (parsedBody.password) {
-      res.status(400).json({ success: false, message: "Password cannot be updated through this endpoint." });
+      res
+        .status(400)
+        .json({
+          success: false,
+          message: "Password cannot be updated through this endpoint.",
+        });
       return;
     }
 
     // Convert latitude & longitude into a spatial point
-    if (parsedBody.latitude !== undefined && parsedBody.longitude !== undefined) {
+    if (
+      parsedBody.latitude !== undefined &&
+      parsedBody.longitude !== undefined
+    ) {
       const { latitude, longitude } = parsedBody;
-      
+
       parsedBody.currentLocation = sql`ST_SetSRID(ST_MakePoint(${longitude}, ${latitude}), 4326)`;
-      
+
       // Remove latitude and longitude from parsedBody to avoid unnecessary updates
       delete parsedBody.latitude;
       delete parsedBody.longitude;
@@ -56,18 +80,20 @@ export const updateUser = async (req: Request, res: Response) => {
     });
   } catch (e) {
     console.log("Error updating user >>>", e);
-    res.status(500).json({ success: false, message: "An unexpected error occurred" });
+    res
+      .status(500)
+      .json({ success: false, message: "An unexpected error occurred" });
   }
 };
-
-
-
 
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const deletedUser = await db.delete(users).where(eq(users.id, id)).returning();
+    const deletedUser = await db
+      .delete(users)
+      .where(eq(users.id, id))
+      .returning();
 
     if (!deletedUser.length) {
       res.status(404).json({ success: false, message: "User not found" });
@@ -80,10 +106,11 @@ export const deleteUser = async (req: Request, res: Response) => {
     });
   } catch (e) {
     console.log("Error deleting user >>>", e);
-    res.status(500).json({ success: false, message: "An unexpected error occurred" });
+    res
+      .status(500)
+      .json({ success: false, message: "An unexpected error occurred" });
   }
 };
-
 
 export const addContact = async (req: Request, res: Response) => {
   try {
@@ -92,7 +119,12 @@ export const addContact = async (req: Request, res: Response) => {
 
     // Prevent users from adding themselves
     if (userId === contactId) {
-      res.status(400).json({ success: false, message: "You cannot add yourself as a contact" });
+      res
+        .status(400)
+        .json({
+          success: false,
+          message: "You cannot add yourself as a contact",
+        });
       return;
     }
 
@@ -100,22 +132,39 @@ export const addContact = async (req: Request, res: Response) => {
     const existingContact = await db
       .select()
       .from(userContacts)
-      .where(and(eq(userContacts.userId, userId), eq(userContacts.contactId, contactId)));
+      .where(
+        and(
+          eq(userContacts.userId, userId),
+          eq(userContacts.contactId, contactId)
+        )
+      );
 
     if (existingContact.length > 0) {
-      res.status(400).json({ success: false, message: "Contact already exists" });
+      res
+        .status(400)
+        .json({ success: false, message: "Contact already exists" });
       return;
     }
 
     // Insert new contact
-    const newContact = await db.insert(userContacts).values({ userId, contactId }).returning();
+    const newContact = await db
+      .insert(userContacts)
+      .values({ userId, contactId })
+      .returning();
 
-    console.log("newContact>>>", newContact)
-    res.status(201).json({ success: true, message: "Contact added successfully", data: newContact });
-
+    console.log("newContact>>>", newContact);
+    res
+      .status(201)
+      .json({
+        success: true,
+        message: "Contact added successfully",
+        data: newContact,
+      });
   } catch (e) {
     console.error("Error adding contact:", e);
-    res.status(500).json({ success: false, message: "An unexpected error occurred" });
+    res
+      .status(500)
+      .json({ success: false, message: "An unexpected error occurred" });
   }
 };
 
@@ -137,24 +186,24 @@ export const getAllContacts = async (req: Request, res: Response) => {
       .innerJoin(users, eq(userContacts.contactId, users.id))
       .where(eq(userContacts.userId, userId));
 
-      console.log("contacts>>", contacts)
+    console.log("contacts>>", contacts);
 
     // Convert longitude & latitude into an array format
-    const formattedContacts = contacts.map(contact => ({
+    const formattedContacts = contacts.map((contact) => ({
       ...contact,
       currentLocation: [contact.longitude, contact.latitude],
     }));
 
-    console.log("formattedContacts>>", formattedContacts)
+    console.log("formattedContacts>>", formattedContacts);
 
     res.status(200).json({ success: true, data: formattedContacts });
-
   } catch (e) {
     console.error("Error fetching contacts:", e);
-    res.status(500).json({ success: false, message: "An unexpected error occurred" });
+    res
+      .status(500)
+      .json({ success: false, message: "An unexpected error occurred" });
   }
 };
-
 
 export const getContactById = async (req: Request, res: Response) => {
   try {
@@ -173,7 +222,12 @@ export const getContactById = async (req: Request, res: Response) => {
       })
       .from(userContacts)
       .innerJoin(users, eq(userContacts.contactId, users.id))
-      .where(and(eq(userContacts.userId, userId), eq(userContacts.contactId, contactId)))
+      .where(
+        and(
+          eq(userContacts.userId, userId),
+          eq(userContacts.contactId, contactId)
+        )
+      )
       .limit(1);
 
     if (!contact.length) {
@@ -188,9 +242,10 @@ export const getContactById = async (req: Request, res: Response) => {
     };
 
     res.status(200).json({ success: true, data: formattedContact });
-
   } catch (e) {
     console.error("Error fetching contact:", e);
-    res.status(500).json({ success: false, message: "An unexpected error occurred" });
+    res
+      .status(500)
+      .json({ success: false, message: "An unexpected error occurred" });
   }
 };

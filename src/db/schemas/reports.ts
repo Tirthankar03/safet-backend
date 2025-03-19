@@ -10,8 +10,8 @@ import {
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
-import { reportImages } from "./reportImages.js";
-import { users } from "./users.js";
+import { reportImages } from "./reportImages";
+import { users } from "./users";
 
 // Reports table
 export const reports = pgTable(
@@ -19,17 +19,17 @@ export const reports = pgTable(
   {
     id: text("id").primaryKey(),
     name: text("name").notNull(),
-    description: text("description").notNull(),
+    description: text("description"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
     address: text("address").notNull(),
-    country: text("country").notNull(),
-    city: text("city").notNull(),
+    country: text("country"),
+    city: text("city"),
     cluster_id: text("cluster_id"),
     type: varchar({ length: 255 }).notNull(),
     userId: text("user_id")
       .notNull()
-      .references(() => users.id, { onDelete: "cascade" }), 
+      .references(() => users.id, { onDelete: "cascade" }),
     location: geometry("location", {
       type: "point",
       srid: 4326,
@@ -48,12 +48,10 @@ export const reportClusters = pgTable("report_clusters", {
   markers: jsonb("markers").notNull(),
 });
 
-
-
 export const reportsRelations = relations(reports, ({ many, one }) => ({
-    reportImages: many(reportImages),
-    user: one(users, {
-      fields: [reports.userId],
-      references: [users.id]
-    })
-  }));
+  reportImages: many(reportImages),
+  user: one(users, {
+    fields: [reports.userId],
+    references: [users.id],
+  }),
+}));
